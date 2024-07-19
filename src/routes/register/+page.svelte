@@ -136,7 +136,12 @@
             document.querySelector("#password").classList.add("border-red-700")
         }
     }
+    
+    function submit_form(){
+        //request to backend
+        console.log(name,email,phone,college,university,collegeid)
         
+    }
 </script>
     <Header/>
     <section class="">
