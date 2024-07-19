@@ -14,6 +14,10 @@
 </style>
 <SectionWrapper isheader=true>
 
+
+
+  
+
 <Header/>
 <div class="m-[7%] " ></div>
 <div class="flex flex-col md:flex-col flex-container w-full max-w-[1920] justify-center items-center lg:space-x-1">
@@ -95,4 +99,9 @@ document.addEventListener("DOMContentLoaded", function() { // On DOM Load initia
 
 
 
+
+
+
 </SectionWrapper>
+
+

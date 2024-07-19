@@ -61,17 +61,17 @@
     // Ensuring the script runs after the DOM has fully loaded
     window.addEventListener('load', () => {
         const the_animation = document.querySelectorAll('.animation');
-        console.log('Elements to animate:', the_animation);
+       
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
-                console.log('Entry:', entry);
+                
                 if (entry.isIntersecting) {
                     entry.target.classList.add('scroll-animation');
-                    console.log('Element is intersecting:', entry.target);
+                    
                 } else {
                     entry.target.classList.remove('scroll-animation');
-                    console.log('Element is not intersecting:', entry.target);
+                    
                 }
             });
         }, {
@@ -81,7 +81,7 @@
 
         the_animation.forEach(element => {
             observer.observe(element);
-            console.log('Observing element:', element);
+           
         });
     });
 </script>
