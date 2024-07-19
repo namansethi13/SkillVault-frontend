@@ -1,4 +1,6 @@
+
 <script>
+    import Header from "../../components/Header.svelte"
     let step = 1;
     let name;
 
@@ -24,11 +26,11 @@
     }
 
 </script>
-
+    <Header/>
     <section class="">
         <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-col text-center justify-center items-center w-full mb-12">
-                <p class="opacity-100 font-semibold text-3xl sm:text-5xl md:text-6xl md:text-left lg:text-left text-center mb-4 md:mb-10 lg:mb-12">Register </p>
+            <div class="flex flex-col text-center justify-center items-center w-full ">
+                
                 <img src="registration.png" class="w-44" alt="hi">
                 <h3 class={"m-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl max-w-[1920] mx-auto w-full text-center " + (step ===1 ? "" : "hidden")}>
                     Hi! How are you? Let us start with an introduction

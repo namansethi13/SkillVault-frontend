@@ -27,14 +27,15 @@ function showdescription(id) {
         
         <button on:click={() => showdescription(index)}>
             
-            <div class="h-10 w-[85vw] md:w-[70vw] lg:md:w-[50vw] py-6 bg-slate-500 flex justify-between items-center" >
+            <div class="h-10 w-[85vw] md:w-[70vw] lg:md:w-[50vw] py-6 bg-slate-500 flex justify-between items-center hover:bg-slate-400 delay-100 " >
                 
-                <p class="ml-6 font-semibold text-base text-left md:text-2xl lg:text-2xl">{question.q}</p>
+                <p class="ml-6 font-semibold text-base text-left md:text-2xl lg:text-2xl ">{question.q}</p>
                 
                 <p class={"mr-6 transition-transform font-semibold md:text-3xl lg:text-3xl text-base " + (faq[index]==="opacity-0 hidden" ? "" : "rotate-45")}>+</p>
             </div>
-            <div class=" w-[85vw] md:w-[70vw] lg:md:w-[50vw] h-auto bg-slate-700  justify-between items-center  " id={"faq_des_"+index}>
-                <p class={"mx-6 font-medium text-left text-base md:text-2xl lg:text-2xl ease-in-out transition-opacity " + (faq[index])}>{question.a}</p>
+
+            <div class=" w-[85vw] mt-2 md:w-[70vw] lg:md:w-[50vw] h-auto bg-slate-700  justify-between items-center  " id={"faq_des_"+index}>
+                <p class={"mx-6 font-medium text-justify text-base md:text-2xl lg:text-2xl ease-in-out transition-opacity " + (faq[index])}>{question.a}</p>
             </div>
         </button>
         {/each}
