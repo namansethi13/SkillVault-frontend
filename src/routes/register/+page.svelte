@@ -1,7 +1,7 @@
 
 <script>
     import Header from "../../components/Header.svelte"
-    let step = 6;
+    let step = 1;
     let name;
     let email;
     let phone;
@@ -140,7 +140,7 @@
     function submit_form(){
         //request to backend
         console.log(name,email,phone,college,university,collegeid)
-        
+
     }
 </script>
     <Header/>
