@@ -10,6 +10,13 @@
     let collegeid;
     let gender;
     let pronouns;
+    if(import.meta.env.Local === "true") {
+        const API_BASE_URL = import.meta.env.Vite_Local_url
+    }
+    else{
+        const API_BASE_URL = import.meta.env.Production_url;
+    }
+
     function incrementstep(input){
         console.log("called")
         if(input==="") return
@@ -137,9 +144,40 @@
         }
     }
     
-    function submit_form(){
-        //request to backend
-        console.log(name,email,phone,college,university,collegeid)
+    async function submit_form(){
+        let pass = document.querySelector("#password").value
+        let confirm_pass = document.querySelector("#confirm_password").value
+        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        if(regex.test(pass) && pass === confirm_pass){
+            let formdata = new FormData()
+            formdata.append("name",name)
+            formdata.append("email",email)
+            formdata.append("phone",phone)
+            formdata.append("college",college)
+            formdata.append("university",university)
+            formdata.append("collegeidimage",collegeid)
+            formdata.append("gender",gender)
+            formdata.append("pronouns",pronouns)
+            try {
+            const response = await fetch(`${API_BASE_URL}/register`, {
+                method: 'POST',
+                body: formdata
+            });
+
+            if (!response.ok) {
+                throw new Error('Registration failed');
+            }
+
+            const result = await response.json();
+            console.log('Registration successful:', result);
+            alert('Registration successful!');
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('Registration failed. Please try again.');
+        }
+        }else{
+            return
+        }
 
     }
 </script>
