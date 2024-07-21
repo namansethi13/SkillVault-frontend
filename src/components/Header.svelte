@@ -10,7 +10,7 @@ function handlehamburger() {
 <header class="flex flex-col relative z-20">
 
 <div class="max-w-[1920] mx-auto w-full flex item-center justify-between p-4 py-6">
-    <a href="/">
+    <a href="/" data-sveltekit-reload>
     <h1 class="font-semibold text-lg">SKILL
     <span class="bg-gradient-to-r from-amber-200 to-yellow-400 inline-block text-transparent bg-clip-text ">
     VAULT

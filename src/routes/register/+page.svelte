@@ -1,5 +1,6 @@
 
 <script>
+    let API_BASE_URL="http://localhost:5000/account/"
     import Header from "../../components/Header.svelte"
     let step = 1;
     let name;
@@ -10,12 +11,12 @@
     let collegeid;
     let gender;
     let pronouns;
-    if(import.meta.env.Local === "true") {
-        const API_BASE_URL = import.meta.env.Vite_Local_url
-    }
-    else{
-        const API_BASE_URL = import.meta.env.Production_url;
-    }
+    // if(import.meta.env.Local === "true") {
+    //      API_BASE_URL = import.meta.env.Vite_Local_url
+    // }
+    // else{
+    //      API_BASE_URL = import.meta.env.Production_url;
+    // }
 
     function incrementstep(input){
         console.log("called")
@@ -158,6 +159,7 @@
             formdata.append("collegeidimage",collegeid)
             formdata.append("gender",gender)
             formdata.append("pronouns",pronouns)
+            formdata.append("password",pass)
             try {
             const response = await fetch(`${API_BASE_URL}/register`, {
                 method: 'POST',

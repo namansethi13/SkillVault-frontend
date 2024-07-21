@@ -60,10 +60,10 @@
 <script>
     // Ensuring the script runs after the DOM has fully loaded
     window.addEventListener('load', () => {
-        const the_animation = document.querySelectorAll('.animation');
+        let the_animation = document.querySelectorAll('.animation');
        
         
-        const observer = new IntersectionObserver((entries) => {
+        let observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 
                 if (entry.isIntersecting) {
