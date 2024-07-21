@@ -8,6 +8,7 @@ function handlehamburger() {
 }
 
 function handleloginmodal(){
+    let API_BASE_URL="http://localhost:5000/account"
     is_login_modal_open = !is_login_modal_open
     if(is_login_modal_open){
         handlehamburger()
@@ -32,7 +33,24 @@ function handleloginmodal(){
 function handleLogin(){
     let email = document.querySelector("#LoginEmail").value
     let password = document.querySelector("#LoginPassword").value
-    console.log(email, password)
+    // console.log(email, password)
+    let formdata = new FormData()
+    formdata.append("email", email)
+    formdata.append("password", password)
+    fetch(`${API_BASE_URL}/login`, {
+        method: "POST",
+        body: formdata
+    }).then(res => {
+        if(res.status === 200){
+            console.log("Login success")
+            // handleloginmodal()
+        }else{
+            console.log("Login failed")
+        }
+    }).catch(err => {
+        console.log(err)
+    
+    })
 }
 </script>
 
