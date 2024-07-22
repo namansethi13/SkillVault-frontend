@@ -55,7 +55,8 @@ for everyone!
 
 </div>
 <script>
-    const typedTextSpan = document.querySelector(".typed-text");
+  let typedTextSpan;
+    typedTextSpan = document.querySelector(".typed-text");
 const cursorSpan = document.querySelector(".cursor");
 const textArray = ["Internship","Learning"];
 const typingDelay =80;
