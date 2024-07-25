@@ -144,6 +144,17 @@
             document.querySelector("#password").classList.add("border-red-700")
         }
     }
+
+    let redirect_time = 10
+    function rediect_timer(){
+        let timer = setInterval(()=>{
+            redirect_time--
+            if(redirect_time === 0){
+                clearInterval(timer)
+                window.location.href = "/"
+            }
+        },1000)
+    }
     
     async function submit_form(){
         let pass = document.querySelector("#password").value
@@ -172,7 +183,8 @@
 
             const result = await response.json();
             console.log('Registration successful:', result);
-            alert('Registration successful!');
+            step++;
+            rediect_timer();
         } catch (error) {
             console.error('Error during registration:', error);
             alert('Registration failed. Please try again.');
@@ -184,11 +196,11 @@
     }
 </script>
     <Header/>
-    <section class="">
+    <section class="m-3 mb-auto">
         <div class="container px-5 py-24 mx-auto">
             <div class="flex flex-col text-center justify-center items-center w-full ">
                 
-                <img src="registration.png" class="w-44" alt="hi">
+                <img src="registration.png" class={"w-44 " + (step !==7 ? "" : "hidden")} alt="hi">
                 <h3 class={"m-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl max-w-[1920] mx-auto w-full text-center " + (step ===1 ? "" : "hidden")}>
                     Hi! How are you? Let us start with an introduction
                 </h3>
@@ -285,7 +297,7 @@
                 <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full" on:click={()=>incrementstep([document.querySelector("#gender").value, document.querySelector("#pronouns").value])} >NEXT →</button>
             </div>
             <div class={"flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 sm:px-0 items-end mt-6 "  + (step ===1 ? "hidden" : "")}>
-                <button class={"text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full " + (step ===6 ? "hidden" : "")} on:click={()=> step--}>Back ←</button>
+                <button class={"text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full " + (step ===7 ? "hidden" : "")} on:click={()=> step--}>Back ←</button>
             </div>
 
 
@@ -300,6 +312,12 @@
                     <input type="password" id="confirm_password" name="confirm_password" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none focus:text-slate-50 text-black py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" on:change={()=>confirm_pass()}>
                 </div>
                 <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full" on:click={()=>submit_form()}>Submit</button>
+                <button class={"text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full mt-9"} on:click={()=> step--}>Back ←</button>
             </div>
+        </div>
+
+        <div class={" flex flex-col items-center justify-center lg:w-2/3 w-full mx-auto px-8 sm:space-x-4 sm:space-y-0 sm:px-0 " + (step ===7 ? "" : "hidden")}>
+           <p class="text-xl sm:text-2xl md:text-2xl lg:text-4xl  ">Verification email has been sent on {email}</p>
+           <p class="text-xl sm:text-2xl md:text-2xl lg:text-4xl ">Redirecting to <a href="/" data-sveltekit-reload class="underline">home</a> in {redirect_time} seconds</p>
         </div>
     </section>
