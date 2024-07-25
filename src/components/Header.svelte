@@ -2,6 +2,7 @@
 
 let is_hamburger_open = false
 let is_login_modal_open = false
+let is_forgot_password_modal_open = false
 let API_BASE_URL="http://localhost:5000/account"
 
 function handlehamburger() {
@@ -61,6 +62,39 @@ function handleLogin() {
         // Handle network or other errors
     });
 }
+
+function handleforgotpasswordmodal(){
+    if(!is_login_modal_open){
+        return
+    }
+
+    is_forgot_password_modal_open = !is_forgot_password_modal_open
+    if(is_forgot_password_modal_open){
+        document.querySelector("#loginmodal").classList.add("hidden")
+        document.querySelector("#forgotpasswordmodal").classList.remove("hidden")
+        document.querySelector("#forgotpasswordmodal").classList.add("flex")
+}
+else{
+    document.querySelector("#loginmodal").classList.remove("hidden")
+    document.querySelector("#forgotpasswordmodal").classList.remove("flex")
+    document.querySelector("#forgotpasswordmodal").classList.add("hidden")
+}
+}
+
+function handleForgotPassword(){
+    let email = document.querySelector("#ForgotPassEmail").value
+    let formdata = new FormData()
+    formdata.append("email", email)
+    fetch(`${API_BASE_URL}/forgotpassword`, {
+        method: "POST",
+        body: formdata
+    }).then(res => {
+        window.alert("Password reset link sent to your email")
+    }).catch(err => {
+        console.log(err)
+    
+    })
+}
 </script>
 
 <header class="flex flex-col relative z-2">
@@ -111,7 +145,7 @@ function handleLogin() {
 
 
 <div class="fixed  pin hidden items-center bg-black w-screen h-screen opacity-60 z-39" id="backdrop"></div>
-<div style="height: 500px" class="z-40 hidden items-center justify-center absolute left-0 right-0 top-0 bottom-0 md:m-56 m-40" id="loginmodal">
+<div style="height: 500px" class="z-40 hidden items-center justify-center absolute left-0 right-0 top-[5%] bottom-0" id="loginmodal">
 
 
     <div class="fixed pin flex items-center">
@@ -151,10 +185,58 @@ function handleLogin() {
 
                     </div>
                     <div class="flex items-center justify-between mt-7">
-                        <a href="#" class="text-indigo-600 no-underline">New user?</a>
-                        <a href="#" class="text-indigo-600 no-underline">Forget Password?</a>
+                        <a href="/register" class="text-indigo-600 no-underline" data-sveltekit-reload >New user?</a>
+                        <button class="text-indigo-600 no-underline" on:click={
+                            ()=>handleforgotpasswordmodal()
+                        }>Forgot Password?</button>
                 </div>
                 </form>
             </div>
         </div>
     </div>
+
+
+
+<!-- forget pass modal -->
+
+
+<div style="height: 500px" class="z-40 hidden items-center justify-center absolute left-0 right-0 top-[5%] bottom-0" id="forgotpasswordmodal">
+
+
+    <div class="fixed pin flex items-center">
+
+            <div class="shadow-lg bg-white rounded-lg p-8 w-96">
+                <div class="flex justify-between mb-6">
+                    <div class="w-[100%]">
+                        <h1 class="text-center text-2xl text-indigo-600">Forgot Password</h1>
+                    </div>
+                    <button on:click={()=>handleforgotpasswordmodal()}>
+                        <span>
+                            <i class="fa fa-x text-black"></i>
+                        </span>
+                    </button>
+                </div>
+
+
+                <form class="pt-6 pb-2 my-2"  on:submit|preventDefault={handleForgotPassword}>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold mb-2 text-black opacity-90" for="email">
+                            Email Address
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-black"  id="ForgotPassEmail" type="text" placeholder="Email Address">
+                    </div>
+                    
+                    <div class="block md:flex items-center justify-between">
+                        <div>
+                            <input type="submit"class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded border border-indigo-700">
+                                Submit
+                            <!-- </input> -->
+                        </div>
+
+                    </div>
+                  
+                </form>
+            </div>
+        </div>
+    </div>
+
