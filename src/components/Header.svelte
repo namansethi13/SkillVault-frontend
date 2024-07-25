@@ -2,13 +2,14 @@
 
 let is_hamburger_open = false
 let is_login_modal_open = false
+let API_BASE_URL="http://localhost:5000/account"
 
 function handlehamburger() {
     is_hamburger_open = !is_hamburger_open
 }
 
 function handleloginmodal(){
-    let API_BASE_URL="http://localhost:5000/account"
+    
     is_login_modal_open = !is_login_modal_open
     if(is_login_modal_open){
         handlehamburger()
@@ -30,27 +31,35 @@ function handleloginmodal(){
 
 }
 
-function handleLogin(){
-    let email = document.querySelector("#LoginEmail").value
-    let password = document.querySelector("#LoginPassword").value
-    // console.log(email, password)
-    let formdata = new FormData()
-    formdata.append("email", email)
-    formdata.append("password", password)
+function handleLogin() {
+    let email = document.querySelector("#LoginEmail").value;
+    let password = document.querySelector("#LoginPassword").value;
+    
+    // Create a FormData object
+    let formdata = new FormData();
+    formdata.append("email", email);
+    formdata.append("password", password);
+    
+    // Send a POST request with credentials included
     fetch(`${API_BASE_URL}/login`, {
         method: "POST",
-        body: formdata
-    }).then(res => {
-        if(res.status === 200){
-            console.log("Login success")
-            // handleloginmodal()
-        }else{
-            console.log("Login failed")
-        }
-    }).catch(err => {
-        console.log(err)
-    
+        body: formdata,
+        credentials: 'include'  // Important for handling cookies
     })
+    .then(res => {
+        if (res.status === 200) {
+            console.log("Login success");
+            // Handle successful login (e.g., redirect or show a success message)
+            // handleloginmodal() or other actions
+        } else {
+            console.log("Login failed");
+            // Handle failed login (e.g., show an error message)
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        // Handle network or other errors
+    });
 }
 </script>
 
