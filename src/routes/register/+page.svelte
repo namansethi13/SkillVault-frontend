@@ -160,6 +160,15 @@
         let pass = document.querySelector("#password").value
         let confirm_pass = document.querySelector("#confirm_password").value
         let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        let loading = document.querySelector("#loading")
+        let passSubmit = document.querySelector("#passSubmit")
+        let backSubmit = document.querySelector("#backSubmit")
+        loading.classList.remove("hidden")
+        console.log(loading)
+        passSubmit.disabled = true
+        backSubmit.disabled = true
+        passSubmit.classList.add("hidden")
+        backSubmit.classList.add("hidden")
         if(regex.test(pass) && pass === confirm_pass){
             let formdata = new FormData()
             formdata.append("name",name)
@@ -176,20 +185,36 @@
                 method: 'POST',
                 body: formdata
             });
-
+            
+            loading.classList.add("hidden")
+            passSubmit.disabled = false
+            backSubmit.disabled = false
+            passSubmit.classList.remove("hidden")
+            backSubmit.classList.remove("hidden")
             if (!response.ok) {
                 throw new Error('Registration failed');
             }
 
             const result = await response.json();
+
             console.log('Registration successful:', result);
             step++;
             rediect_timer();
         } catch (error) {
             console.error('Error during registration:', error);
+            loading.classList.add("hidden")
+            passSubmit.disabled = false
+            backSubmit.disabled = false
+            passSubmit.classList.remove("hidden")
+            backSubmit.classList.remove("hidden")
             alert('Registration failed. Please try again.');
         }
         }else{
+            loading.classList.add("hidden")
+            passSubmit.disabled = false
+            backSubmit.disabled = false
+            passSubmit.classList.remove("hidden")
+            backSubmit.classList.remove("hidden")
             return
         }
 
@@ -296,8 +321,8 @@
 
                 <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full" on:click={()=>incrementstep([document.querySelector("#gender").value, document.querySelector("#pronouns").value])} >NEXT →</button>
             </div>
-            <div class={"flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 sm:px-0 items-end mt-6 "  + (step ===1 ? "hidden" : "")}>
-                <button class={"text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full " + (step ===7 ? "hidden" : "")} on:click={()=> step--}>Back ←</button>
+            <div class={"flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 sm:px-0 items-end mt-6 "  + (step >1 && step<6 ? "" : "hidden")}>
+                <button class={"text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full "} on:click={()=> step--}>Back ←</button>
             </div>
 
 
@@ -311,9 +336,17 @@
                     <label for="confirm_password" class="leading-7 text-sm text-slate-50">Confirm Password</label>
                     <input type="password" id="confirm_password" name="confirm_password" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none focus:text-slate-50 text-black py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" on:change={()=>confirm_pass()}>
                 </div>
-                <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full" on:click={()=>submit_form()}>Submit</button>
-                <button class={"text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full mt-9"} on:click={()=> step--}>Back ←</button>
+                <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full" on:click={()=>submit_form()} id="passSubmit">Submit</button>
+                <button class={"text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg w-full mt-9"} on:click={()=> step--} id="backSubmit">Back ←</button>
+                <div class="flax flex-col justify-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" class="w-20 hidden" id="loading"><rect fill="#5A67D8" stroke="#5A67D8" stroke-width="15" width="30" height="30" x="25" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></rect><rect fill="#5A67D8" stroke="#5A67D8" stroke-width="15" width="32" height="30" x="85" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></rect><rect fill="#5A67D8" stroke="#5A67D8" stroke-width="15" width="30" height="30" x="145" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></rect></svg>
+                </div>
             </div>
+          
+
+
+
+
         </div>
 
         <div class={" flex flex-col items-center justify-center lg:w-2/3 w-full mx-auto px-8 sm:space-x-4 sm:space-y-0 sm:px-0 " + (step ===7 ? "" : "hidden")}>

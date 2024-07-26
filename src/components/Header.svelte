@@ -1,10 +1,28 @@
 <script>
-
+import {is_loggedin} from '../store.js';
+import { onMount } from "svelte";
+import {page } from '$app/stores';
+import { goto } from "$app/navigation";
 let is_hamburger_open = false
 let is_login_modal_open = false
 let is_forgot_password_modal_open = false
 let API_BASE_URL="http://localhost:5000/account"
 
+
+onMount(() => {
+
+    let auth = $is_loggedin
+
+    if(auth){
+        if (page.pathname != "dashboard") {
+            goto("/dashboard")
+        }
+    }
+
+
+}
+
+)
 function handlehamburger() {
     is_hamburger_open = !is_hamburger_open
 }
@@ -28,11 +46,12 @@ function handleloginmodal(){
         document.querySelector("#loginmodal").classList.add("hidden")
         document.querySelector("#backdrop").classList.add("hidden")
     }
+
     
-
 }
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
-function handleLogin() {
+async function handleLogin() {
     let email = document.querySelector("#LoginEmail").value;
     let password = document.querySelector("#LoginPassword").value;
     
@@ -42,25 +61,77 @@ function handleLogin() {
     formdata.append("password", password);
     
     // Send a POST request with credentials included
+    let submit_btn = document.querySelector("#submitLogin")
+    let loading = document.querySelector("#loading")
+    console.log(submit_btn)
+    submit_btn.disabled = true
+    submit_btn.classList.add("hidden")
+    loading.classList.remove("hidden")
     fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         body: formdata,
         credentials: 'include'  // Important for handling cookies
     })
-    .then(res => {
+    .then(async res => {
+        submit_btn.classList.remove("hidden")
+        loading.classList.add("hidden")
         if (res.status === 200) {
-            console.log("Login success");
+            // window.alert("Login success");
+            submit_btn.innerHTML = "Success"
+            submit_btn.classList.remove("bg-indigo-600")
+            submit_btn.classList.remove("hover:bg-indigo-700")
+            submit_btn.classList.remove("border-indigo-700")
+            submit_btn.classList.add("bg-green-500")
+            submit_btn.classList.remove("hover:bg-green-600")
+            submit_btn.classList.add("border-green-500")
+            submit_btn.classList.add("cursor-not-allowed")
+            await delay(2000);
+            handleloginmodal()
+            submit_btn.innerHTML = "Login"
+            submit_btn.classList.remove("bg-green-500")
+            submit_btn.classList.add("bg-indigo-600")
+            submit_btn.classList.add("hover:bg-indigo-700")
+            submit_btn.classList.remove("hover:bg-green-600")
+            submit_btn.classList.remove("border-green-500")
+            submit_btn.classList.add("border-indigo-700")
+            submit_btn.classList.remove("cursor-not-allowed")
+            submit_btn.disabled = false
+            is_loggedin.set(true)
+            window.location.href = "/dashboard"
             // Handle successful login (e.g., redirect or show a success message)
             // handleloginmodal() or other actions
         } else {
+            // window.alert("Invalid credentials")
+            submit_btn.innerHTML = "Failed"
+            submit_btn.classList.add("bg-red-500")
+            submit_btn.classList.remove("bg-indigo-600")
+            submit_btn.classList.add("hover:bg-red-600")
+            submit_btn.classList.remove("hover:bg-indigo-700")
+            submit_btn.classList.add("border-red-500")
+            submit_btn.classList.remove("border-indigo-700")
+            submit_btn.classList.add("cursor-not-allowed")
+            await delay(2000);
+            submit_btn.innerHTML = "Login"
+            submit_btn.classList.remove("bg-red-500")
+            submit_btn.classList.add("bg-indigo-600")
+            submit_btn.classList.add("hover:bg-indigo-700")
+            submit_btn.classList.remove("hover:bg-red-600")
+            submit_btn.classList.remove("border-red-500")
+            submit_btn.classList.add("border-indigo-700")
+            submit_btn.classList.remove("cursor-not-allowed")
+            submit_btn.disabled = false
             console.log("Login failed");
             // Handle failed login (e.g., show an error message)
         }
     })
     .catch(err => {
         console.log(err);
+        window.alert("Network error");
+        handleloginmodal()
         // Handle network or other errors
     });
+    
+    submit_btn.classList.remove("cursor-not-allowed")
 }
 
 function handleforgotpasswordmodal(){
@@ -85,15 +156,20 @@ function handleForgotPassword(){
     let email = document.querySelector("#ForgotPassEmail").value
     let formdata = new FormData()
     formdata.append("email", email)
-    fetch(`${API_BASE_URL}/forgotpassword`, {
+    fetch(`${API_BASE_URL}/forgot_password`, {
         method: "POST",
         body: formdata
     }).then(res => {
+        handleforgotpasswordmodal()
         window.alert("Password reset link sent to your email")
+
     }).catch(err => {
         console.log(err)
     
     })
+
+
+   
 }
 </script>
 
@@ -123,9 +199,11 @@ function handleForgotPassword(){
             <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out" href="/#faqs" data-sveltekit-reload>FAQs</a>
             <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out" href="/aboutus" data-sveltekit-reload>About us</a>
             <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out" href="/contactus" data-sveltekit-reload>Contact us</a>
+            {#if !($is_loggedin)}
             <button class="bg-indigo-600 hover:bg-indigo-700 px-4 rounded-3xl transition ease-in-out delay-100 " on:click={()=>handleloginmodal()} data-sveltekit-reload>
             Login
         </button>
+        {/if}
     </nav>
 </div>
     <nav class="hidden md:flex item-center gap-4 lg:gap-6">
@@ -133,9 +211,11 @@ function handleForgotPassword(){
         <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out text-lg" href="/#faqs" data-sveltekit-reload>FAQs</a>
         <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out text-lg" href="/aboutus" data-sveltekit-reload>About us</a>
         <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out text-lg" href="/contactus" data-sveltekit-reload>Contact us</a>
+        {#if !($is_loggedin)}
         <button class="bg-indigo-600 hover:bg-indigo-700 px-4 rounded-3xl transition ease-in-out delay-100 text-lg " on:click={()=>handleloginmodal()} data-sveltekit-reload>
             Login
         </button>
+        {/if}
     </nav>
 </div>
 
@@ -178,8 +258,10 @@ function handleForgotPassword(){
                     </div>
                     <div class="block md:flex items-center justify-between">
                         <div>
-                            <input type="submit"class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded border border-indigo-700">
-                                Sign In
+                            <button type="submit"class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded border border-indigo-700" id="submitLogin" >
+                                Login
+                            </button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="w-20 hidden " id="loading"><rect fill="#5A67D8" stroke="#5A67D8" stroke-width="15" width="30" height="30" x="25" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></rect><rect fill="#5A67D8" stroke="#5A67D8" stroke-width="15" width="32" height="30" x="85" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></rect><rect fill="#5A67D8" stroke="#5A67D8" stroke-width="15" width="30" height="30" x="145" y="85"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></rect></svg>
                             <!-- </input> -->
                         </div>
 
@@ -188,7 +270,7 @@ function handleForgotPassword(){
                         <a href="/register" class="text-indigo-600 no-underline" data-sveltekit-reload >New user?</a>
                         <button class="text-indigo-600 no-underline" on:click={
                             ()=>handleforgotpasswordmodal()
-                        }>Forgot Password?</button>
+                        } type="button">Forgot Password?</button>
                 </div>
                 </form>
             </div>
@@ -228,8 +310,7 @@ function handleForgotPassword(){
                     
                     <div class="block md:flex items-center justify-between">
                         <div>
-                            <input type="submit"class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded border border-indigo-700">
-                                Submit
+                            <input type="submit"class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded border border-indigo-700" id="submitForgotPass" value="Submit">
                             <!-- </input> -->
                         </div>
 
