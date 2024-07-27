@@ -11,6 +11,11 @@ function handlesidebar(){
 function handleoptions(clicked){
     if(clicked==0){
         console.log("clicked 0");
+        // let sidebarlement=document.getElementById("at")
+        // sidebarlement.classList.add("text-white")
+        // // highlight the selected option
+        // sidebarlement.add("font-extrabold")
+        // sidebarlement.add("text-3xl")
         selected=0;
         
     }
@@ -92,19 +97,19 @@ function handleoptions(clicked){
             <button on:click={()=>handleoptions(0)}> 
             <div class="flex justify-start w-full items-center text-md md:text-2xl lg:text-3xl mb-5">
             <i class="fa-solid fa-list m-1"></i>
-            <p class="m-1"> Assigned Tasks </p>
+            <p id="at" class="m-1"> Assigned Tasks </p>
         </div>
     </button> 
         <button on:click={()=>handleoptions(1)}>
         <div class="flex justify-start w-full items-center text-md md:text-2xl lg:text-3xl mb-5">
             <i class="fa-regular fa-calendar m-1"></i>
-            <p class="m-1"> Upcoming Events</p>
+            <p id="ue" class="m-1"> Upcoming Events</p>
         </div>
     </button>
         <button on:click={()=>handleoptions(2)}>
         <div class="flex justify-start w-full items-center text-md md:text-2xl lg:text-3xl mb-1 ">
             <i class="fa-solid fa-headset m-1"></i>
-            <p class="m-1"> Mentor Support </p>
+            <p id="ms" class="m-1"> Mentor Support </p>
         </div>
     </button>
 
