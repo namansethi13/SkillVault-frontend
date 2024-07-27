@@ -60,9 +60,12 @@ window.addEventListener("scroll", scrollFunction);
 </script>
 {/if}
 
+
+{#if windloc!=="/dashboard"}
+
 <Footer/>
 
-
+{/if}
 
 
 <!-- header

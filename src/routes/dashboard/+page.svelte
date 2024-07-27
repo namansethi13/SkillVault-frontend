@@ -36,6 +36,15 @@ function handleoptions(clicked){
     }
 }
 
+
+
+let details={
+    name:"John Doe",
+    email: "johndoe@gmail.com",
+    gender: "male",
+    pronouns: "he/him",
+}
+
 </script>
 
 <!-- <button on:click={ () =>{
@@ -66,14 +75,14 @@ function handleoptions(clicked){
         </div>
     </button>
     </div>
-    <div id="sidebar"  class={" md:flex flex-col h-screen  justify-between bg-[#0B2533] w-[20%] max-w-96  min-w-[12rem] items-center rounded-r-lg absolute md:static z-10 "+(issidebaropen?"flex":"hidden")}>
+    <div id="sidebar"  class={" md:flex flex-col h-screen overflow-auto  justify-between bg-[#0B2533] w-[20%] max-w-96  min-w-[12rem] items-center rounded-r-lg absolute md:static z-10 "+(issidebaropen?"flex":"hidden")}>
         <div class=" flex flex-col w-full ">
         <div id="profile" class="flex justify-between md:justify-center w-full">
             <button on:click={()=>handleoptions(4)}>
             <div class="flex justify-center w-full items-center text-md md:text-3xl lg:text-4xl mt-8 pb-2 text-lg">
                 <i class="fa-solid fa-user m-1 mr-4"></i>
 
-                <p class="m-1">Profile</p>
+                <p class={"m-1 "+(selected==4? "font-bold" : "")}>Profile</p>
                 
             </div>
         </button>
@@ -97,19 +106,19 @@ function handleoptions(clicked){
             <button on:click={()=>handleoptions(0)}> 
             <div class="flex justify-start w-full items-center text-md md:text-2xl lg:text-3xl mb-5">
             <i class="fa-solid fa-list m-1"></i>
-            <p id="at" class="m-1"> Assigned Tasks </p>
+            <p id="at" class={"m-1 "+(selected==0? "font-bold" : "")}> Assigned Tasks </p>
         </div>
     </button> 
         <button on:click={()=>handleoptions(1)}>
         <div class="flex justify-start w-full items-center text-md md:text-2xl lg:text-3xl mb-5">
             <i class="fa-regular fa-calendar m-1"></i>
-            <p id="ue" class="m-1"> Upcoming Events</p>
+            <p id="ue" class={"m-1 "+(selected==1? "font-bold" : "")}> Upcoming Events</p>
         </div>
     </button>
         <button on:click={()=>handleoptions(2)}>
         <div class="flex justify-start w-full items-center text-md md:text-2xl lg:text-3xl mb-1 ">
             <i class="fa-solid fa-headset m-1"></i>
-            <p id="ms" class="m-1"> Mentor Support </p>
+            <p id="ms" class={"m-1 "+(selected==2? "font-bold" : "")}> Mentor Support </p>
         </div>
     </button>
 
