@@ -4,7 +4,7 @@ import UpcomingEvents from '../../components/dashboard/UpcomingEvents.svelte'
 import MentorSupport from '../../components/dashboard/MentorSupport.svelte'
 import Profile from '../../components/dashboard/Profile.svelte'
 let issidebaropen=false
-let selected=0
+let selected=4
 function handlesidebar(){
     issidebaropen = !issidebaropen
 }
@@ -54,14 +54,14 @@ function handleoptions(clicked){
 
 
 <div class="flex justify-start">
-    <div id ="closingsidebar" class={"md:hidden h-screen w-8  bg-[#0B2533] rounded-tr-lg rounded-br-lg  items-center justify-center "+(issidebaropen?"hidden":"flex")}>
+    <div id ="closingsidebar" class={"md:hidden h-screen w-8  bg-[#0B2533] rounded-tr-lg rounded-br-lg  items-center justify-center "+(issidebaropen?"flex":"flex")}>
         <button on:click={()=>handlesidebar()}>
         <div id="arrowslide" >
             <i class="fa-solid fa-arrow-left-long text-3xl"></i>
         </div>
     </button>
     </div>
-    <div id="sidebar"  class={" md:flex flex-col h-screen  justify-between bg-[#0B2533] w-[20%] max-w-96  min-w-[12rem] items-center rounded-lg absolute md:static "+(issidebaropen?"flex":"hidden")}>
+    <div id="sidebar"  class={" md:flex flex-col h-screen  justify-between bg-[#0B2533] w-[20%] max-w-96  min-w-[12rem] items-center rounded-r-lg absolute md:static z-10 "+(issidebaropen?"flex":"hidden")}>
         <div class=" flex flex-col w-full ">
         <div id="profile" class="flex justify-between md:justify-center w-full">
             <button on:click={()=>handleoptions(4)}>
