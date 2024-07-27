@@ -53,7 +53,7 @@ function handleoptions(clicked){
 } }> log out</button> -->
 
 
-<div class="flex justify-between">
+<div class="flex justify-start">
     <div id ="closingsidebar" class={"md:hidden h-screen w-8  bg-[#0B2533] rounded-tr-lg rounded-br-lg  items-center justify-center "+(issidebaropen?"hidden":"flex")}>
         <button on:click={()=>handlesidebar()}>
         <div id="arrowslide" >
@@ -129,7 +129,7 @@ function handleoptions(clicked){
 
 
     </div>
-    <div id="main" class="bg-green-200 h-screen w-full max-w-[72rem]">
+    <div id="main" class="bg-green-200 h-screen w-full max-w-[75rem]">
         {#if selected==0}
             <Assignedtasks/>
         {/if}
