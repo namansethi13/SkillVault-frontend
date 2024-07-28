@@ -1,5 +1,7 @@
 <script>
-	import { set_read_implementation } from '__sveltekit/server';
+	import { getCroppedImg } from './../../lib/canvasUtils.js';
+
+    import Cropper from 'svelte-easy-crop'
     let details={
     name:"John Doe",
     email: "johndoe@gmail.com",
@@ -11,14 +13,34 @@
 
 let  avatar = "blank profile.png";
 let profile_update = false;
-	
-	const onfileselected =(e)=>{
-  let image = e.target.files[0];
-            let reader = new FileReader();
-            reader.readAsDataURL(image);
-            reader.onload = e => {
-                 avatar = e.target.result
-            };
+let uncropped = null;
+
+function onfileselected(e){
+    let backdrop = document.getElementById("backdrop");
+    let cropper = document.getElementById("cropper");
+    let image = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = e => {
+    uncropped = e.target.result
+    backdrop.classList.remove("hidden");
+    cropper.classList.remove("hidden");
+    cropper.classList.add("flex");
+};
+
+
+
+}
+let pixelCrop = null;
+async function cropImage(){
+        console.log("cropping image");
+		avatar = await getCroppedImg(uncropped, pixelCrop);
+        profile_update = true;
+        let backdrop = document.getElementById("backdrop");
+        let cropper = document.getElementById("cropper");
+        backdrop.classList.add("hidden");
+        cropper.classList.add("hidden");
+        cropper.classList.remove("flex");
 }
 
 
@@ -27,11 +49,9 @@ function handleupdateprofile(){
     let email = document.getElementById("email").value;
     let gender = document.getElementById("gender").value;
     let pronouns = document.getElementById("pronouns").value;
-    if(profile_update){
-    let image = document.getElementById("profile-pic-input").files[0];
-    }
-    else{
     let image = null;
+    if(profile_update){
+    image = document.getElementById("profile-pic-input").files[0];
     }
 
     let formdata = new FormData();
@@ -51,18 +71,31 @@ function handleupdateprofile(){
         window.location.href = '/dashboard'
     })
 }
+let crop = { x: 0, y: 0 }
+let zoom = 1
 </script>
-<style>
-    .profile-pic {
-        object-fit: cover;
-    }
-</style>
 
+
+    <div class="w-96 h-60 z-20 absolute top-[20%] md:left-[40%] left-[10%]">
+        <div style="height: 500px" class="z-40 hidden items-center justify-center bg-white " id="cropper">
+            <Cropper
+            image={uncropped}
+            bind:crop
+            bind:zoom
+            on:cropcomplete={e => pixelCrop = e.detail.pixels}
+            />
+            
+            <button type="button" on:click={cropImage}>Crop!</button>
+        </div>
+
+    </div>
+
+<div class="fixed  pin items-center hidden bg-black w-screen h-screen opacity-60 z-10 " id="backdrop"></div>
 <div class="bg-slate-300 flex-col flex w-full h-full overflow-auto">
-
-
+  
+    
  <div id="profile" class="flex justify-center mb-10 mt-8">
-   
+
    <div class="h-full relative">
  
          <img src={avatar} class="md:w-36 md:h-36 lg:h-40 w-28 lg:w-40 rounded-full h-28"  alt="">

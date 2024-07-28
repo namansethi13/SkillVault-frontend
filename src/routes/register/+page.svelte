@@ -221,6 +221,58 @@
     }
 </script>
     <Header/>
+    <div class={"flex justify-center items-center mt-20 " + (step ===7 ? "hidden" : "")}>   
+        <div class={"flex items-center md:inline-flex " + (step ===1 ? "" : "hidden")}>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="50" height="50" viewBox="-40 -40 80 80"  >
+            <circle cx="0" cy="0" r="35" style={"  transition: stroke 0.3s ease; stroke-width: 4; fill: none; "+ (step==1? "stroke: rgb(240,240,240);" : (step>1? "stroke: rgb(75,181,67);" : "stroke: rgb(150,150,150);"))} />
+            <text x="-7 " y="14" font-size="40" font-weight="400" style={" transition: fill 0.3s ease; "+ (step==1? "fill: rgb(240,240,240);" : (step>1? "fill: rgb(75,181,67);" : "fill: rgb(150,150,150);"))}>1</text>
+        </svg>
+        <p class="mx-2" style={" transition: color 0.3s ease; "+ (step==1? "color: rgb(240,240,240);" : (step>1? "color: rgb(75,181,67);" : "color: rgb(100,100,100);"))}>
+            Introduction*
+        </p>
+        <div class="h-0.5 w-12 bg-slate-100 mx-2 hidden md:block"></div> 
+    </div>
+
+
+    <div class={"flex items-center md:inline-flex  " + (step ===2 ? "" : "hidden")}>
+            
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="50" height="50" viewBox="-40 -40 80 80"  >
+        <circle cx="0" cy="0" r="35" style={" transition: stroke 0.3s ease; stroke-width: 4; fill: none; "+ (step==2? "stroke: rgb(240,240,240);" : (step>2   ? "stroke: rgb(75,181,67);" : "stroke: rgb(150,150,150);"))} />
+        <text x="-10 " y="14" font-size="40" font-weight="400" style={" transition: fill 0.3s ease; "+ (step==2? "fill: rgb(240,240,240);" : (step>2? "fill: rgb(75,181,67);" : "fill: rgb(150,150,150);"))}>2</text>
+    </svg>
+    <p class="mx-2" style={" transition: color 0.3s ease; "+ (step==2? "color: rgb(240,240,240);" : (step>2? "color: rgb(75,181,67);" : "color: rgb(150,150,150);"))}>
+    Contact Information*
+    </p>
+    <div class="h-0.5 w-12 bg-slate-100 mx-2 hidden md:block"></div>
+</div>
+
+<div class={"flex items-center md:inline-flex  " + (step==3 || step==4 ? "" : "hidden")}>
+            
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="50" height="50" viewBox="-40 -40 80 80">
+    <circle cx="0" cy="0" r="35" style={"  transition: stroke 0.3s ease; stroke-width: 4; fill: none; "+ (step==3 || step==4? "stroke: rgb(240,240,240);" : (step>4   ? "stroke: rgb(75,181,67);" : "stroke: rgb(150,150,150);"))} />
+    <text x="-10 " y="14" font-size="40" font-weight="400" style={" transition: fill 0.3s ease; "+ (step==3 || step==4? "fill: rgb(240,240,240);" : (step>4? "fill: rgb(75,181,67);" : "fill: rgb(150,150,150);"))}>3</text>
+</svg>
+<p class="mx-2" style={"transition: color 0.3s ease; "+ (step==3 || step==4? "color: rgb(240,240,240);" : (step>4? "color: rgb(75,181,67);" : "color: rgb(150,150,150);"))}>
+Education Details*
+</p>
+<div class="h-0.5 w-12 bg-slate-100 mx-2  hidden md:block"></div>
+</div>
+
+
+
+<div class={"flex items-center md:inline-flex  " + (step ===5 ? "" : "hidden")}>
+            
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="50" height="50" viewBox="-40 -40 80 80">
+    <circle cx="0" cy="0" r="35" style={"  transition: stroke 0.3s ease;  stroke-width: 4; fill: none; "+ (step==5? "stroke: rgb(240,240,240);" : (step>5   ? "stroke: rgb(75,181,67);" : "stroke: rgb(150,150,150);"))} />
+    <text x="-10 " y="14" font-size="40" font-weight="400" style={" transition: fill 0.3s ease; "+ (step==5? "fill: rgb(240,240,240);" : (step>5? "fill: rgb(75,181,67);" : "fill: rgb(150,150,150);"))}>4</text>
+</svg>
+<p class="mx-2" style={"transition: color 0.3s ease; "+ (step==5? "color: rgb(240,240,240);" : (step>5? "color: rgb(75,181,67);" : "color: rgb(150,150,150);"))}>
+Gender and Pronouns
+</p>
+</div>
+
+    </div>
     <section class="m-3 mb-auto">
         <div class="container px-5 py-24 mx-auto">
             <div class="flex flex-col text-center justify-center items-center w-full ">

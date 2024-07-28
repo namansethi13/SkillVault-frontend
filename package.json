@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"svelte-easy-crop": "^3.0.0",
 		"taos": "^1.0.5"
 	}
 }

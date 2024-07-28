@@ -38,12 +38,7 @@ function handleoptions(clicked){
 
 
 
-let details={
-    name:"John Doe",
-    email: "johndoe@gmail.com",
-    gender: "male",
-    pronouns: "he/him",
-}
+
 
 </script>
 
@@ -143,7 +138,8 @@ let details={
 
 
     </div>
-    <div id="main" class="bg-green-200 h-screen w-full max-w-[75rem]">
+    <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions (because this closes side bar if it is opened in mobile and div is accessed) -->
+    <div id="main" class="bg-green-200 h-screen w-full max-w-[75rem]" on:click={(issidebaropen? handlesidebar() : "")} >
         {#if selected==0}
             <Assignedtasks/>
         {/if}
