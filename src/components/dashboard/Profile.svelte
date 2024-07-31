@@ -76,7 +76,7 @@ let zoom = 1
 </script>
 
 
-    <div class="w-96 h-60 z-20 absolute top-[20%] md:left-[40%] left-[10%]">
+    <div class="w-96 h-60 z-20 absolute hidden top-[20%] md:left-[40%] left-[10%]">
         <div style="height: 500px" class="z-40 hidden items-center justify-center bg-white " id="cropper">
             <Cropper
             image={uncropped}
@@ -94,7 +94,7 @@ let zoom = 1
 <div class="bg-slate-300 flex-col flex w-full h-full overflow-auto">
   
     
- <div id="profile" class="flex justify-center mb-10 mt-8">
+ <div id="profile" class="flex justify-center mb-10 mt-8 w-full">
 
    <div class="h-full relative">
  
