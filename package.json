@@ -19,7 +19,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"clsx": "^2.1.1",
+		"lucide-svelte": "^0.418.0",
 		"svelte-easy-crop": "^3.0.0",
-		"taos": "^1.0.5"
+		"tailwind-merge": "^2.4.0",
+		"tailwind-variants": "^0.2.1"
 	}
 }
