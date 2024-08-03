@@ -20,9 +20,12 @@
 	"type": "module",
 	"dependencies": {
 		"clsx": "^2.1.1",
+		"daisy": "^0.2.0",
+		"daisyui": "^4.12.10",
 		"lucide-svelte": "^0.418.0",
 		"svelte-easy-crop": "^3.0.0",
 		"tailwind-merge": "^2.4.0",
-		"tailwind-variants": "^0.2.1"
+		"tailwind-variants": "^0.2.1",
+		"ui": "^0.2.4"
 	}
 }

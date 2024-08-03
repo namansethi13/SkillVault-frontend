@@ -1,19 +1,53 @@
 <script>
+	import { onMount } from 'svelte';
 	import { getCroppedImg } from './../../lib/canvasUtils.js';
 
     import Cropper from 'svelte-easy-crop'
+    let  avatar = "blank profile.png";
+    let profile_update = false;
+    let uncropped = null;
+    let isLoading = true;
+    let error = null;
+    let pixelCrop = null;
+    let crop = { x: 0, y: 0 }
+    let zoom = 1 
     let details={
-    name:"John Doe",
-    email: "johndoe@gmail.com",
-    gender: "male",
-    pronouns: null,
-    batch: "January - march 2024",
-    role: "Web Developer"
-}
+    name:"loading",
+    email: "loading",
+    gender: "loading",
+    pronouns: "loading",
+    batch: "loading",
+    role: "loading"
+    }
 
-let  avatar = "blank profile.png";
-let profile_update = false;
-let uncropped = null;
+
+
+onMount(async () => {
+    try {
+        const response = await fetch('http://localhost:5000/account/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        details = data;
+    } catch (e) {
+        console.error("There was a problem fetching the data:", e);
+        error = e.message;
+    } finally {
+        isLoading = false;
+    }
+})
+
+
+
 
 function onfileselected(e){
     let backdrop = document.getElementById("backdrop");
@@ -29,14 +63,12 @@ function onfileselected(e){
     cropper.classList.add("flex");
     cropper_parent.classList.remove("hidden");
     cropper_parent.classList.add("flex");
-};
+};}
 
 
 
-}
-let pixelCrop = null;
-let crop = { x: 0, y: 0 }
-let zoom = 1
+
+
 async function cropImage(){
         console.log("cropping image");
 		avatar = await getCroppedImg(uncropped, pixelCrop);
@@ -52,6 +84,8 @@ async function cropImage(){
         crop = { x: 0, y: 0 }
 }
 
+
+
 function cancelCrop() {
     let backdrop = document.getElementById("backdrop");
     let cropper = document.getElementById("cropper");
@@ -63,6 +97,8 @@ function cancelCrop() {
     zoom = 1;
     crop = { x: 0, y: 0 }
 }
+
+
 
 function handleupdateprofile(){
     let name = document.getElementById("name").value;
@@ -92,8 +128,30 @@ function handleupdateprofile(){
     })
 }
 
-</script>
 
+
+</script>
+{#if isLoading}
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+{:else if error}
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl">
+            <h2 class="text-xl font-bold text-red-600 mb-4">Error</h2>
+            <p class="text-gray-700">An error was encountered while fetching your profile</p>
+            <div class="flex justify-center">
+
+                <button 
+                class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                on:click={() => window.location.reload()}
+                >
+                Retry
+            </button>
+        </div>
+        </div>
+    </div>
+{/if}
 
     <div class="w-96 h-60 z-20 hidden flex-col items-center bg-white absolute top-[20%] md:left-[40%] left-[10%]" id="cropper_parent">
         <div class="z-40  items-center justify-center bg-white w-full h-full" id="cropper">
@@ -140,22 +198,22 @@ function handleupdateprofile(){
     <form class="px-4 md:px-40 flex flex-col"  on:submit|preventDefault={handleupdateprofile}> 
         <div class="flex justify-between mt-6">
             <label for="name" class="text-black text-lg md:text-3xl lg:text-4xl  p-1 ">Name:</label>
-            <input type="text" name="name" id="name" placeholder="Full Name" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1  border border-black" value={details.name}>
+            <input type="text" name="name" id="name" placeholder="Full Name" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1  border border-black bg-slate-50" value={details.name}>
         </div>
 
         <div class="flex justify-between  mt-6">
             <label for="email" class="text-black text-lg md:text-3xl lg:text-4xl p-1">Email:</label>
-            <input type="email" name="email" id="email" placeholder="Email" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1 border border-black" value={details.email}>
+            <input type="email" name="email" id="email" placeholder="Email" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1 border border-black bg-slate-50" value={details.email}>
         </div>
 
          <div class="flex justify-between  mt-6">
             <label for="gender" class="text-black text-lg md:text-3xl lg:text-4xl p-1">Gender:</label>
-            <input type="text" name="gender" id="gender" placeholder="Gender" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1  border border-black" value={details.gender?? ""}>
+            <input type="text" name="gender" id="gender" placeholder="Gender" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1  border border-black bg-slate-50" value={details.gender?? ""}>
         </div>
 
         <div class="flex justify-between  mt-6">
             <label for="pronouns" class="text-black text-lg md:text-3xl lg:text-4xl p-1">Pronouns:</label>
-            <input type="text" name="pronouns" id="pronouns" placeholder="Pronouns" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1  border border-black"  value={details.pronouns?? ""}>
+            <input type="text" name="pronouns" id="pronouns" placeholder="Pronouns" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1  border border-black bg-slate-50"  value={details.pronouns?? ""}>
         </div>
 
         <div class="flex justify-between  mt-6">
@@ -169,7 +227,7 @@ function handleupdateprofile(){
         </div>
 
         <div class="flex justify-center  mt-12">
-        <button type="button" class="text-white bg-gradient-to-r text-lg md:text-3xl lg:text-4xl from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2">
+        <button type="" class="text-white bg-gradient-to-r text-lg md:text-3xl lg:text-4xl from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2">
             Update</button>
 
         </div> 

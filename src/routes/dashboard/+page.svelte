@@ -37,7 +37,17 @@ function handleoptions(clicked){
 }
 
 
-
+function handlelogout(){
+    fetch('http://localhost:5000/account/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'  // Important for handling cookies
+    }).then(() => {
+        window.location.href = '/'
+    })
+}
 
 
 </script>
@@ -124,14 +134,17 @@ function handleoptions(clicked){
        
        <div class="flex flex-col w-full">
             <span class="bg-gray-400 w-full h-0.5 "></span>
-            <div class="flex justify-center w-full items-center text-md md:text-3xl lg:text-4xl mt-8 mb-3 text-lg">
+            <button on:click={handlelogout}>
 
-            <i class="fa-solid fa-right-from-bracket m-1 mr-3"></i>
-
-            <p class="m-1 ">Logout</p>
-
-            
-        </div>
+                <div class="flex justify-center w-full items-center text-md md:text-3xl lg:text-4xl mt-8 mb-3 text-lg">
+                    
+                    <i class="fa-solid fa-right-from-bracket m-1 mr-3"></i>
+                    
+                    <p class="m-1 ">Logout</p>
+                    
+                    
+                </div>
+            </button>
     </div>
         
 
