@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { getCroppedImg } from './../../lib/canvasUtils.js';
+	import { getCroppedImg , getCroppedImg2} from './../../lib/canvasUtils.js';
 
     import Cropper from 'svelte-easy-crop'
     let  avatar = "blank profile.png";
@@ -19,10 +19,20 @@
     batch: "loading",
     role: "loading"
     }
-
-
-
-onMount(async () => {
+    let imagebase64 = null;
+// function blobToBase64(canvas) {
+//     return new Promise((resolve, reject) => {
+//         canvas.toBlob((blob) => {
+//             const reader = new FileReader();
+//             reader.onloadend = () => {
+//                 resolve(reader.result); // This will be the Base64 string
+//             };
+//             reader.onerror = reject;
+//             reader.readAsDataURL(blob);
+//         }, 'image/png');
+//     });
+// }
+async function loadprofile(){
     try {
         const response = await fetch('http://localhost:5000/account/profile', {
             method: 'GET',
@@ -31,19 +41,34 @@ onMount(async () => {
             },
             credentials: 'include'
         });
+
         
         if (!response.ok) {
+            console.log(response);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
         details = data;
+        try{
+            avatar = `http://localhost:5000/account/profile_picture/${details.profile}`;
+            if(avatar == "http://localhost:5000/account/profile_picture/undefined"){
+                avatar = "blank profile.png";
+            }
+        }
+        catch(e){
+            console.log("no profile picture found");
+        }
     } catch (e) {
         console.error("There was a problem fetching the data:", e);
         error = e.message;
     } finally {
         isLoading = false;
     }
+}
+
+onMount(async () => {
+  loadprofile();
 })
 
 
@@ -72,6 +97,7 @@ function onfileselected(e){
 async function cropImage(){
         console.log("cropping image");
 		avatar = await getCroppedImg(uncropped, pixelCrop);
+        imagebase64 = await getCroppedImg2(uncropped, pixelCrop);
         profile_update = true;
         let backdrop = document.getElementById("backdrop");
         let cropper = document.getElementById("cropper");
@@ -100,27 +126,24 @@ function cancelCrop() {
 
 
 
-function handleupdateprofile(){
+async function handleupdateprofile(){
     let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
     let gender = document.getElementById("gender").value;
     let pronouns = document.getElementById("pronouns").value;
     let image = null;
     if(profile_update){
-    image = document.getElementById("profile-pic-input").files[0];
-    }
+    image = imagebase64;
+    console.log("image updated");
+     }
+   
 
     let formdata = new FormData();
     formdata.append("name",name);
-    formdata.append("email",email);
     formdata.append("gender",gender);
     formdata.append("pronouns",pronouns);
-    formdata.append("image",image);
-    fetch('http://localhost:5000/account/updateprofile', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+    formdata.append("profilepicture",image);
+    fetch('http://localhost:5000/account/profile', {
+        method: 'PUT',
         body: formdata,
         credentials: 'include'  // Important for handling cookies
     }).then(() => {
@@ -128,6 +151,17 @@ function handleupdateprofile(){
     })
 }
 
+function handlelogout(){
+    fetch('http://localhost:5000/account/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'  // Important for handling cookies
+    }).then(() => {
+        window.location.href = '/'
+    })
+}
 
 
 </script>
@@ -142,11 +176,12 @@ function handleupdateprofile(){
             <p class="text-gray-700">An error was encountered while fetching your profile</p>
             <div class="flex justify-center">
 
-                <button 
+
+            <button 
                 class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                on:click={() => window.location.reload()}
+                on:click={() => handlelogout()}
                 >
-                Retry
+                Logout
             </button>
         </div>
         </div>
@@ -203,7 +238,7 @@ function handleupdateprofile(){
 
         <div class="flex justify-between  mt-6">
             <label for="email" class="text-black text-lg md:text-3xl lg:text-4xl p-1">Email:</label>
-            <input type="email" name="email" id="email" placeholder="Email" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1 border border-black bg-slate-50" value={details.email}>
+            <input type="email" name="email" id="email" placeholder="Email" class="text-lg md:text-2xl lg:text-3xl text-black hover:text-black p-1 border border-black" value={details.email} disabled>
         </div>
 
          <div class="flex justify-between  mt-6">
@@ -227,7 +262,7 @@ function handleupdateprofile(){
         </div>
 
         <div class="flex justify-center  mt-12">
-        <button type="" class="text-white bg-gradient-to-r text-lg md:text-3xl lg:text-4xl from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2">
+        <button type="submit" class="text-white bg-gradient-to-r text-lg md:text-3xl lg:text-4xl from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2">
             Update</button>
 
         </div> 

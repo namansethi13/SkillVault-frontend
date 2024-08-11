@@ -25,10 +25,13 @@ const checkLoginStatus = async () => {
 
 
 
+
+
 const is_loggedin = writable(false);
 if( await checkLoginStatus()){
     is_loggedin.set(true);
+    // check if user is allotted
+    // check if user is approved
 }
-
 
 export { is_loggedin };

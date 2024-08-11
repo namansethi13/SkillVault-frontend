@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" /><meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script> 
+
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover" class="relative bg-gradient-to-r from-slate-800 to-slate-900 text-slate-100 text-sm sm:text-base flex
@@ -15,4 +17,19 @@
 		<div class="inset-0 opacity-5 absolute z-[-1] bgGrid"></div>
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
+
+	<script>
+		const lenis = new Lenis()
+
+lenis.on('scroll', (e) => {
+  console.log(e)
+})
+
+function raf(time) {
+  lenis.raf(time)
+  requestAnimationFrame(raf)
+}
+
+requestAnimationFrame(raf)
+	</script>
 </html>

@@ -2,7 +2,6 @@
 import {is_loggedin} from '../store.js';
 import { onMount } from "svelte";
 import {page } from '$app/stores';
-import { goto } from "$app/navigation";
 let is_hamburger_open = false
 let is_login_modal_open = false
 let is_forgot_password_modal_open = false
@@ -15,7 +14,7 @@ onMount(() => {
 
     if(auth){
         if (page.pathname != "dashboard") {
-            goto("/dashboard")
+           window.location.href = "/dashboard"
         }
     }
 
