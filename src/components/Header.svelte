@@ -1,5 +1,5 @@
 <script>
-import {is_loggedin} from '../store.js';
+import {is_loggedin, user, is_loading} from '../store.js';
 import { onMount } from "svelte";
 import {page } from '$app/stores';
 let is_hamburger_open = false
@@ -10,15 +10,57 @@ let API_BASE_URL="http://localhost:5000/account"
 
 onMount(() => {
 
-    let auth = $is_loggedin
+    let auth;
+    let profile;
+    let loading = true
+    let is_alloted;
+    let has_chosen;
+    let has_accepted;
 
-    if(auth){
-        if (page.pathname != "dashboard") {
-           window.location.href = "/dashboard"
+    is_loading.subscribe(value => {
+        loading = value
+        
+        console.log("loading")
+        
+        if(!loading){
+            console.log("not loading")
+            auth = $is_loggedin
+            profile = $user
+            console.log(profile)
+            is_alloted = profile.is_alloted
+            has_chosen = profile.has_chosen
+            has_accepted = profile.has_accepted
+            
+            console.log(auth)
+            console.log(is_alloted)
+            console.log(has_chosen)
+            console.log(has_accepted)
+            
+            
+            if(auth){
+                console.log("auth")
+                if(is_alloted && has_chosen && has_accepted){
+                    console.log("alloted")
+                    if (page.pathname != "dashboard") {
+                        window.location.href = "/dashboard"
+                    }
+
+                }
+                    if(!is_alloted || !has_chosen || !has_accepted){
+                        console.log("not alloted")
+                        if (page.pathname != "pre-dashboard") {
+                            window.location.href = "/pre-dashboard"
+                        }
+                    }
+                    
+            }
+            
         }
-    }
+
+    })
 
 
+   
 }
 
 )

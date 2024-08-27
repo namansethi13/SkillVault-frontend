@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store';
-
+let user = writable(null);
+let is_loading = writable(true);
+const is_loggedin = writable(false);
 
 const checkLoginStatus = async () => {
     try {
@@ -11,27 +13,35 @@ const checkLoginStatus = async () => {
         }
     );
         if (response.status === 200) {
-           return true
+            response.json().then((data) => {
+                user.set(data.user);
+                console.log('User is logged in:', data.user);
+                is_loggedin.set(true);
+                is_loading.set(false);
+
+            });
         } else {
             console.error('Failed to check login status:', response);
-            return false
+            is_loggedin.set(false);
+            is_loading.set(false);
         }
     } catch (error) {
         console.error('Failed to check login status:', error);
-        return false
-    }
+        is_loggedin.set(false);
+        is_loading.set(false);}
 };
 
 
 
+await checkLoginStatus();
 
 
+// if( await checkLoginStatus()){
+//     console.log("loading is set to", is_loading)
+//     is_loggedin.set(true);
+//     is_loading.set(false);
+//     // check if user is allotted
+//     // check if user is approved
+// }
 
-const is_loggedin = writable(false);
-if( await checkLoginStatus()){
-    is_loggedin.set(true);
-    // check if user is allotted
-    // check if user is approved
-}
-
-export { is_loggedin };
+export { is_loggedin , user , is_loading};
