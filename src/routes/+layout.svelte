@@ -1,13 +1,25 @@
 
 <script>
+	import Loading from './../components/common/Loading.svelte';
   import {page } from '$app/stores';
   let windloc=$page.url.pathname;
   import "../app.css";
   import Footer from "../components/Footer.svelte"
+  import {is_loading}  from "../store";
+
+  let loading = true;
+  $: console.log("loading",loading);
+
+  is_loading.subscribe(value => {
+    loading = value;
+  });
  
 </script>
 
 <slot />
+{#if loading}
+<Loading/>
+{/if}
 
 {#if windloc==="/"}
 

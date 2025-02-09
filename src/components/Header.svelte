@@ -1,17 +1,20 @@
 <script>
 import {is_loggedin, user, is_loading} from '../store.js';
 import { onMount } from "svelte";
+import { goto } from '$app/navigation';
 import {page } from '$app/stores';
 let is_hamburger_open = false
 let is_login_modal_open = false
 let is_forgot_password_modal_open = false
+let auth = false
+let profile = null;
+
+$: console.log("auth is",auth)
 let API_BASE_URL="http://localhost:5000/account"
 
 
 onMount(() => {
 
-    let auth;
-    let profile;
     let loading = true
     let is_alloted;
     let has_chosen;
@@ -30,38 +33,13 @@ onMount(() => {
             is_alloted = profile.is_alloted
             has_chosen = profile.has_chosen
             has_accepted = profile.has_accepted
-            
-            console.log(auth)
-            console.log(is_alloted)
-            console.log(has_chosen)
-            console.log(has_accepted)
-            
-            
-            if(auth){
-                console.log("auth")
-                if(is_alloted && has_chosen && has_accepted){
-                    console.log("alloted")
-                    if (page.pathname != "dashboard") {
-                        window.location.href = "/dashboard"
-                    }
-
-                }
-                    if(!is_alloted || !has_chosen || !has_accepted){
-                        console.log("not alloted")
-                        if (page.pathname != "pre-dashboard") {
-                            window.location.href = "/pre-dashboard"
-                        }
-                    }
-                    
-            }
-            
         }
 
     })
 
 
    
-}
+} 
 
 )
 function handlehamburger() {
@@ -240,9 +218,14 @@ function handleForgotPassword(){
             <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out" href="/#faqs" data-sveltekit-reload>FAQs</a>
             <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out" href="/aboutus" data-sveltekit-reload>About us</a>
             <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out" href="/contactus" data-sveltekit-reload>Contact us</a>
-            {#if !($is_loggedin)}
+            {#if !auth}
             <button class="bg-indigo-600 hover:bg-indigo-700 px-4 rounded-3xl transition ease-in-out delay-100 " on:click={()=>handleloginmodal()} data-sveltekit-reload>
             Login
+        </button>
+        {/if}
+        {#if !profile?.has_chosen}
+        <button class="bg-indigo-600 hover:bg-indigo-700 px-4 rounded-3xl transition ease-in-out delay-100 " on:click={()=>goto("/pre-dashboard")} data-sveltekit-reload>
+            Enroll Now
         </button>
         {/if}
     </nav>
@@ -252,9 +235,14 @@ function handleForgotPassword(){
         <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out text-lg" href="/#faqs" data-sveltekit-reload>FAQs</a>
         <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out text-lg" href="/aboutus" data-sveltekit-reload>About us</a>
         <a class="duration-400 hover:text-yellow-400 cursor-pointer transition ease-in-out text-lg" href="/contactus" data-sveltekit-reload>Contact us</a>
-        {#if !($is_loggedin)}
+        {#if !auth}
         <button class="bg-indigo-600 hover:bg-indigo-700 px-4 rounded-3xl transition ease-in-out delay-100 text-lg " on:click={()=>handleloginmodal()} data-sveltekit-reload>
             Login
+        </button>
+        {/if}
+        {#if !profile?.has_chosen}
+        <button class="bg-indigo-600 hover:bg-indigo-700 px-4 rounded-3xl transition ease-in-out delay-100 " on:click={()=>goto("/pre-dashboard")} data-sveltekit-reload>
+            Enroll Now
         </button>
         {/if}
     </nav>
