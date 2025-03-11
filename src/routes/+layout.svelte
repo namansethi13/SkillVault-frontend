@@ -8,7 +8,6 @@
   import {is_loading}  from "../store";
 
   let loading = true;
-  $: console.log("loading",loading);
 
   is_loading.subscribe(value => {
     loading = value;
