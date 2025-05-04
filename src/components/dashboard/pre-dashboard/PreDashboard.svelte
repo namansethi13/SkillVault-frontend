@@ -9,6 +9,7 @@
 		name: string;
 		role: string;
 		has_chosen: boolean;
+		is_alloted: boolean;
 	}
 
 	let loggedin = false;
@@ -17,7 +18,8 @@
 		email: '',
 		name: '',
 		role: '',
-		has_chosen: false
+		has_chosen: false,
+		is_alloted: false,
 	};
 	let loading = true;
 	let internshipsCategory = [];
@@ -26,6 +28,7 @@
 	let subDomanins = [];
 	let isDomainChosen = false;
 	let hasChosenSubdomain = false;
+	let isAlloted = false;
 
 	onMount(async () => {
 		loading = true;
@@ -34,7 +37,11 @@
 		user.subscribe(value => {
 			user_data = value;
 			hasChosenSubdomain = user_data?.has_chosen;
+			isAlloted = user_data?.is_alloted;
+			console.log('user_data', user_data);
 			isDomainChosen = hasChosenSubdomain;
+
+
 		});
 
 		const response = await fetch('http://localhost:5000/domains/getalldomains');
@@ -59,9 +66,15 @@
 	}
 </script>
 
-{#if hasChosenSubdomain}
+{#if hasChosenSubdomain && !isAlloted}
 	<div class="flex flex-col items-center justify-center w-full h-full">
 		<p class="text-4xl text-white font-semibold">You have already selected your domain!</p>
+	</div>
+{/if}
+
+{#if isAlloted}
+	<div class="flex flex-col items-center justify-center w-full h-full">
+		<p class="text-4xl text-white font-semibold">Congratulations! You are selected please accept the offer letter in your mail</p>
 	</div>
 {/if}
 
