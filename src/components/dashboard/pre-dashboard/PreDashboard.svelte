@@ -118,11 +118,3 @@
 		</div>
 	</SectionWrapper>
 {/if}
-
-<style>
-	description {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-</style>

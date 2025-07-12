@@ -1,5 +1,5 @@
 <script>
-import Assignedtasks from '../../components/dashboard/Assignedtasks.svelte'
+import Assignedtasks from '../../components/dashboard/AssignedTasks.svelte'
 import UpcomingEvents from '../../components/dashboard/UpcomingEvents.svelte'
 import MentorSupport from '../../components/dashboard/MentorSupport.svelte'
 import Profile from '../../components/dashboard/Profile.svelte'
